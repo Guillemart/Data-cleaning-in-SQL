@@ -1,11 +1,11 @@
----Cleaning Data in Sql 
+---Cleaning Data in Sql ---
 
 
 --- View what the table has
 select * 
 from Portfolio_Project.dbo.NashvilleHousing
 
---- Change Date Format
+--- Change Date Format 
 select saledate, convert(date,saledate)
 from Portfolio_Project.dbo.NashvilleHousing
 
@@ -24,7 +24,6 @@ set Sale_date_converted= convert(date,saledate)
 
 select *
 from Portfolio_Project.dbo.NashvilleHousing
---where PropertyAddress is null 
 order by ParcelID
 
 select a.ParcelID,a.PropertyAddress,b.ParcelID,b.PropertyAddress,isnull (a.propertyAddress,b.PropertyAddress)
@@ -60,6 +59,7 @@ add Property_split_address nvarchar(255);
 
 update NashvilleHousing 
 set Property_split_address= SUBSTRING(propertyaddress, 1, CHARINDEX(',',propertyaddress)-1) 
+
 alter table NashvilleHousing
 add Property_split_city nvarchar(255);
 
@@ -70,7 +70,7 @@ select *
 from Portfolio_Project.dbo.NashvilleHousing
 
 
-
+--- Breaking Owner Address into Address, City and State
 select OwnerAddress
 from Portfolio_Project.dbo.NashvilleHousing
 
@@ -104,7 +104,7 @@ from Portfolio_Project.dbo.NashvilleHousing
 
 
 
---- Change Y and N to yes and no in "sold as vacant" field
+--- Change Y and N to Yes and No in "sold as vacant" field
 
 select distinct(SoldAsVacant), count(soldasvacant)
 from Portfolio_Project.dbo.NashvilleHousing
@@ -132,9 +132,7 @@ select *,
 ROW_NUMBER() over (
 partition by ParcelId,PropertyAddress,SalePrice,SaleDate,LegalReference
  order by UniqueID) row_num
-
 from Portfolio_Project.dbo.NashvilleHousing 
----order by ParcelID
 )
 
 select *
@@ -149,7 +147,4 @@ select *
 from Portfolio_Project.dbo.NashvilleHousing
 
 Alter table Portfolio_Project.dbo.NashvilleHousing
-drop column OwnerAddress,TaxDistrict,PropertyAddress
-
-Alter table Portfolio_Project.dbo.NashvilleHousing
-drop column SaleDate
+drop column OwnerAddress,TaxDistrict,PropertyAddress,SaleDate
